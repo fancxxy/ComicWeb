@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block title %}ComicWeb {{ chapter.title }}-{{ chapter.comic_title }}-{% endblock %}
+
+{% block page_content %}
+    <div class="col-lg-12">
+        <h1 class="text-center">{{ chapter.title }}</h1>
+        {% for image in images %}
+            <img class="img-responsive center-block"
+                 src="{{ url_for('static', filename='resources/' + image.path) }}">
+        {% endfor %}
+        {% if previous %}
+            <a href="{{ previous }}">
+        {% else %}
+            <a href="{{ url_for('main.chapter', id=chapter.comic_id, cid=chapter.id) }}">
+        {% endif %}
+                <button type="button" class="btn btn-default btn-block">返回漫画主页</button>
+            </a>
+    </div>
+{% endblock %}

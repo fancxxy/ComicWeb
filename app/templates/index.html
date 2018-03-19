@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% import "_pagination.html" as macros %}
+
+{% block title %}ComicWeb - 漫画列表{% endblock %}
+
+{% block page_content %}
+    <div class="col-lg-12">
+        <div class="search-header">
+            <form method="POST" class="form-form">
+                {{ form.hidden_tag() }}
+                <div class="input-group">
+                    {{ form.url(class="form-control") }}
+                    <span class="input-group-btn">
+                    {{ form.submit(class="btn btn-primary") }}
+                    </span>
+                </div>
+            </form>
+        </div>
+    </div>
+    {% for comic in comics %}
+        <div class="col-lg-3 col-md-6 col-xs-9">
+            <div class="index-item">
+                <div class="index-cover">
+                    <a class="thumbnail" href="{{ url_for('main.comic', id=comic.id) }}" title="{{ comic.title }}">
+                        <img class="img-responsive" src={{ url_for('static', filename='covers/'+comic.cover) }} alt="{{ comic.title }}">
+                    </a>
+                </div>
+                <div id="ci" class="index-info">
+                    <ul>
+                        <li><a class="index-title" href="{{ url_for('main.comic', id=comic.id) }}" title="{{ comic.title }}">{{ comic.title }}</a></li>
+                        <li><span class="text">来源：</span>{{ comic.interface }}</li>
+                        <li><span class="text">最新：</span>{{ comic.newest }}</li>
+                        <li><span class="text">更新：</span>{{ moment(comic.updates).format('YYYY-MM-DD') }}</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+
+    {% if pagination %}
+        <div class="pages">
+            {{ macros.pagination_widget(pagination, 'main.index') }}
+        </div>
+    {% endif %}
+{% endblock %}
