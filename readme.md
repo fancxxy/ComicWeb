@@ -1,8 +1,8 @@
 # ComicWeb
 
 ## 截图
-![index](screenshots/index.jpeg)
+![index](screenshots/index.png)
 
-![comic](screenshots/comic.jpeg)
+![comic](screenshots/comic.png)
 
-![chapter](screenshots/chapter.jpeg)
+![chapter](screenshots/chapter.png)

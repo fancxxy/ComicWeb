@@ -4,9 +4,8 @@
 
 {% block head %}
     {{ super() }}
-    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.jpg') }}" type="image/x-icon">
-    <link rel="icon" href="{{ url_for('static', filename='favicon.jpg') }}" type="image/x-icon">
-{#    <link href="{{ url_for('static', filename='bootstrap.min.css') }}" rel="stylesheet">#}
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
     <link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet">
 {% endblock %}
 
@@ -59,7 +58,6 @@
                     <p>Copyright &copy; ComicWeb 2018</p>
                 </div>
             </div>
-            <!-- /.row -->
         </footer>
     </div>
 

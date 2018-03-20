@@ -14,7 +14,7 @@ from app import db
 from . import main
 from .forms import SubscribeForm
 from comicd import Comic as cc, Chapter as cr, Config as cg
-from ..models import Comic, Chapter, Image
+from ..models import Comic, Chapter, Image, Subscriber
 from ..utils import crop_cover, quote
 
 
@@ -32,9 +32,8 @@ def index():
             c = cc(form.url.data)
             if c.init():
                 hash = md5((c.instance.name + c.title).encode('utf-8')).hexdigest()
-                comic = Comic(url=c.url, title=c.title, interface=c.instance.name,
-                              cover=hash + '.jpg', summary=c.summary, newest=c.chapters[-1][0],
-                              updates=datetime.utcnow())
+                comic = Comic(url=c.url, title=c.title, interface=c.instance.name, cover=hash + '.jpg',
+                              summary=c.summary, update_time=datetime.utcnow())
                 r, f = c.download_cover('app/static/covers', comic.cover)
                 if r:
                     crop_cover(f)
@@ -46,16 +45,15 @@ def index():
                                       comic_id=comic.id)
                     db.session.add(chapter)
                 db.session.commit()
+                comic.newest_chapter_id = Chapter.query.filter_by(comic_id=comic.id).order_by(
+                    db.desc(Chapter.id)).first().id
+                db.session.add(comic)
+                db.session.commit()
                 flash('Subscribe succeed')
                 return redirect(url_for('main.index'))
             else:
                 flash('Subscribe failed')
     page = request.args.get('page', 1, type=int)
-    # pagination = db.session.query(Comic). \
-    #     filter(Comic.id == Subscriber.comic_id). \
-    #     filter(User.id == Subscriber.user_id). \
-    #     filter(User.id == current_user.id).paginate(page, per_page=20, error_out=False)
-    # comics = pagination.items
     pagination = current_user.comics.paginate(page, per_page=current_app.config['COMICS_PER_PAGE'], error_out=False)
     comics = [item.comic for item in pagination.items]
     return render_template('index.html', comics=comics, pagination=pagination, form=form)
@@ -65,11 +63,17 @@ def index():
 @login_required
 def comic(id):
     comic = Comic.query.get_or_404(id)
-    # comic.update()
+    comic.update()
     page = request.args.get('page', 1, type=int)
-    pagination = comic.chapters.order_by(db.desc(Chapter.id)).paginate(page, per_page=current_app.config['CHAPTERS_PER_PAGE'], error_out=False)
+    pagination = comic.chapters.order_by(db.desc(Chapter.id)).paginate(page,
+                                                                       per_page=current_app.config['CHAPTERS_PER_PAGE'],
+                                                                       error_out=False)
     chapters = pagination.items
-    return render_template('comic.html', comic=comic, chapters=chapters, pagination=pagination)
+    last_chapter = Chapter.query.filter_by(id=Subscriber.query.filter_by(user_id=current_user.id,
+                                                                         comic_id=id).first().last_chapter_id).first()
+    newest_chapter = Chapter.query.filter_by(id=comic.newest_chapter_id).first()
+    return render_template('comic.html', comic=comic, chapters=chapters, pagination=pagination,
+                           last_chapter=last_chapter, newest_chapter=newest_chapter)
 
 
 @main.route('/comics/<id>/<cid>')
@@ -89,5 +93,8 @@ def chapter(id, cid):
                 count += 1
                 db.session.add(image)
 
+    subscriber = Subscriber.query.filter_by(user_id=current_user.id, comic_id=chapter.comic_id).first()
+    subscriber.last_chapter_id = cid
+    db.session.add(subscriber)
     images = Image.query.filter_by(comic_id=id, chapter_id=cid).order_by(Image.image_id).all()
     return render_template('chapter.html', chapter=chapter, images=images, previous=request.referrer)

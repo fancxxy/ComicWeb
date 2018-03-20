@@ -16,6 +16,7 @@ class Subscriber(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), primary_key=True)
     comic_id = db.Column(db.Integer, db.ForeignKey('comics.id'), primary_key=True)
     subscribe_date = db.Column(db.DateTime(), default=datetime.utcnow)
+    last_chapter_id = db.Column(db.Integer)
 
 
 # subscribers = db.Table('subscribers',
@@ -68,8 +69,8 @@ class Comic(db.Model):
     interface = db.Column(db.String(32), nullable=False)
     cover = db.Column(db.String(256))
     summary = db.Column(db.Text())
-    newest = db.Column(db.String(64))
-    updates = db.Column(db.DateTime(), default=None)
+    newest_chapter_id = db.Column(db.Integer)
+    update_time = db.Column(db.DateTime(), default=None)
 
     users = db.relationship('Subscriber', backref=db.backref('comic', lazy='joined'), lazy='dynamic',
                             cascade='all, delete-orphan')
@@ -82,18 +83,16 @@ class Comic(db.Model):
     def update(self):
         c = cc(self.url)
         if c.init():
-            self.title = c.title
-            self.interface = c.instance.name
-            self.cover = md5((c.instance.name + c.title).encode('utf-8')).hexdigest() + '.jpg'
-            self.summary = c.summary
-            self.newest = c.chapters[-1][0]
-            self.updates = datetime.utcnow()
-            r, f = c.download_cover('app/static/covers', self.cover)
-            if r:
-                crop_cover(f)
+            self.update_time = datetime.utcnow()
+            chapter = Chapter.query.filter_by(id=self.newest_chapter_id).first()
+            if chapter and chapter.title != c.chapters[-1][0]:
+                new_chapters = c.chapters[c.chapters.index((chapter.title, chapter.url))+1:]
+                for title, url in new_chapters:
+                    chapter = Chapter(title=title, comic_title=self.title, interface=self.interface, url=url,
+                                      comic_id=self.id)
+                    db.session.add(chapter)
+                self.newest_chapter_id = c.chapters[-1]
             db.session.add(self)
-            # for chapter in self.chapters:
-            #     chapter.update()
         else:
             # TODO log error
             pass
@@ -107,24 +106,12 @@ class Chapter(db.Model):
     interface = db.Column(db.String(32))
     comic_title = db.Column(db.String(128))
     comic_id = db.Column(db.Integer, db.ForeignKey('comics.id'), nullable=False)
-    update_time = db.Column(db.DateTime())
+    update_time = db.Column(db.DateTime(), default=datetime.utcnow)
     path = db.Column(db.String(256), default=None)
     __table_args__ = (db.UniqueConstraint('title', 'comic_title', 'interface', name='uc_title_comic_title_interface'),)
 
     def __repr__(self):
         return '<Chapter {} {} {}>'.format(self.comic_title, self.title, self.interface)
-
-    def update(self):
-        c = cr(self.url)
-        if c.init():
-            self.title = c.ctitle
-            self.comic_title = c.title
-            self.interface = c.instance.name
-            update_time = datetime.utcnow()
-            db.session.add(self)
-        else:
-            # TODO log error
-            pass
 
 
 class Image(db.Model):
@@ -134,4 +121,3 @@ class Image(db.Model):
     chapter_id = db.Column(db.Integer, db.ForeignKey('chapters.id'), nullable=False)
     image_id = db.Column(db.Integer, nullable=False)
     path = db.Column(db.String(256), nullable=False, unique=True)
-

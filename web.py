@@ -11,4 +11,9 @@ migrate = Migrate(app, db)
 
 @app.shell_context_processor
 def make_shell_context():
+    user = User.query.filter_by(username='comic').first()
+    if not user:
+        u = User(email='comic@comic.com', username='comic', password='comic', confirmed=True)
+        db.session.add(u)
+        db.session.commit()
     return dict(db=db, User=User, Comic=Comic, Subscriber=Subscriber, Chapter=Chapter, Image=Image)
