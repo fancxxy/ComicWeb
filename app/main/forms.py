@@ -9,11 +9,11 @@ from comicd import Comic, ComicdError
 
 
 class SubscribeForm(FlaskForm):
-    url = StringField('Comic URL:', validators=[DataRequired(), URL()], render_kw={'placeholder': 'input comic url'})
+    url = StringField('Comic URL:', validators=[DataRequired(), URL()], render_kw={'placeholder': '输入漫画网址'})
     submit = SubmitField('订阅')
 
     def validate_url(self, field):
         try:
             Comic.find(field.data)
         except ComicdError:
-            raise ValidationError('Only support {}'.format(' '.join(list(Comic.support()))))
+            raise ValidationError('只支持 {}'.format(' '.join(list(Comic.support()))))

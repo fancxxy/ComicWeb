@@ -24,6 +24,7 @@
                     <a class="thumbnail" href="{{ url_for('main.comic', id=comic.id) }}" title="{{ comic.title }}">
                         <img class="img-responsive" src={{ url_for('static', filename='covers/'+comic.cover) }} alt="{{ comic.title }}">
                     </a>
+                    <div class="shownn"><a class="unsubscribe" href="{{ url_for('main.unsubscribe', id=comic.id) }}" title="取消订阅">取消订阅</a></div>
                 </div>
                 <div id="ci" class="index-info">
                     <ul>

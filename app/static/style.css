@@ -51,6 +51,32 @@ footer {
     color: #999999;
 }
 
+.shownn .unsubscribe {
+    font-size: 12px;
+    color: transparent;
+    bottom: 32px;
+    left: 20px;
+    text-align: center;
+    max-width: 100px;
+    position: absolute;
+    background: transparent;
+    border-radius: 2px;
+    display: block;
+}
+
+.shownn:hover .unsubscribe {
+    font-size: 12px;
+    color: #FFFFFF;
+    bottom: 32px;
+    left: 20px;
+    text-align: center;
+    max-width: 100px;
+    position: absolute;
+    background: rgba(0, 0, 0, .50);
+    border-radius: 2px;
+    display: block;
+}
+
 .blank {
     margin-left: 15px;
 }

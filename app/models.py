@@ -87,10 +87,12 @@ class Comic(db.Model):
             chapter = Chapter.query.filter_by(id=self.newest_chapter_id).first()
             if chapter and chapter.title != c.chapters[-1][0]:
                 new_chapters = c.chapters[c.chapters.index((chapter.title, chapter.url))+1:]
+                index = chapter.index
                 for title, url in new_chapters:
                     chapter = Chapter(title=title, comic_title=self.title, interface=self.interface, url=url,
-                                      comic_id=self.id)
+                                      comic_id=self.id, index=index)
                     db.session.add(chapter)
+                    index += 1
                 self.newest_chapter_id = c.chapters[-1]
             db.session.add(self)
         else:
@@ -102,13 +104,15 @@ class Chapter(db.Model):
     __tablename__ = 'chapters'
     id = db.Column(db.Integer, primary_key=True)
     url = db.Column(db.String(256), unique=True, nullable=False)
+    index = db.Column(db.Integer)
     title = db.Column(db.String(128))
     interface = db.Column(db.String(32))
     comic_title = db.Column(db.String(128))
     comic_id = db.Column(db.Integer, db.ForeignKey('comics.id'), nullable=False)
     update_time = db.Column(db.DateTime(), default=datetime.utcnow)
     path = db.Column(db.String(256), default=None)
-    __table_args__ = (db.UniqueConstraint('title', 'comic_title', 'interface', name='uc_title_comic_title_interface'),)
+    __table_args__ = (db.UniqueConstraint('title', 'comic_title', 'interface', name='uc_title_comic_title_interface'),
+                      db.UniqueConstraint('index', 'comic_id', name='uc_index_comic'))
 
     def __repr__(self):
         return '<Chapter {} {} {}>'.format(self.comic_title, self.title, self.interface)
