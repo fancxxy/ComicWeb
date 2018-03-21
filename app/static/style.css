@@ -28,7 +28,7 @@ footer {
 
 .pages {
     clear: both;
-    padding: 0;
+    padding-top: 30px;
     text-align: center;
 }
 
@@ -43,12 +43,38 @@ footer {
 .index-title {
     font-size: 15px;
     font-weight: bold;
-    color: #2b669a;
+    color: #2c3e50;
 }
 
 .text {
     font-size: 12px;
     color: #999999;
+}
+
+.shownn .unsubscribe {
+    font-size: 12px;
+    color: transparent;
+    bottom: 32px;
+    left: 20px;
+    text-align: center;
+    max-width: 100px;
+    position: absolute;
+    background: transparent;
+    border-radius: 2px;
+    display: block;
+}
+
+.shownn:hover .unsubscribe {
+    font-size: 12px;
+    color: #FFFFFF;
+    bottom: 32px;
+    left: 20px;
+    text-align: center;
+    max-width: 100px;
+    position: absolute;
+    background: rgba(0, 0, 0, .50);
+    border-radius: 2px;
+    display: block;
 }
 
 .blank {
@@ -85,23 +111,19 @@ footer {
 .comic-title {
     font-size: 25px;
     font-weight: bold;
-    color: #2b669a;
-}
-
-.chapter-item {
-    float: left;
-    width: auto;
-    padding-top: 20px;
+    color: #2c3e50;
 }
 
 .chapter-text {
+    display: block;
+    padding-top: 20px;
     width: 180px;
     line-height: 25px;
     font-size: 14px;
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
-    color: #2b669a;
+    color: #2c3e50;
 }
 
 .image-item {
@@ -111,4 +133,9 @@ footer {
 
 .image {
     margin-bottom: 30px;
+}
+
+.image-text {
+    font-size: 18px;
+    color: #2c3e50;
 }
