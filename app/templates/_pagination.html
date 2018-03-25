@@ -5,7 +5,7 @@
                 &laquo;
             </a>
         </li>
-        {% for p in pagination.iter_pages(left_edge=1, left_current=2, right_current=3, right_edge=1) %}
+        {% for p in pagination.iter_pages(left_edge=1, left_current=1, right_current=3, right_edge=1) %}
             {% if p %}
                 {% if p == pagination.page %}
                     <li class="active">

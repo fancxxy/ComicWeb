@@ -2,15 +2,19 @@
 
 {% block title %}ComicWeb {{ chapter.title }}-{{ chapter.comic_title }}-{% endblock %}
 
+{% block navbar_define %}
+    <nav class="navbar navbar-default" role="navigation">
+{% endblock %}
+
 {% block page_content %}
     <div class="col-lg-12">
         <div class="text-center">
-        {% if previous %}
-            <a href="{{ previous }}"
-        {% else %}
-            <a href="{{ url_for('main.chapter', id=chapter.comic_id, cid=chapter.id) }}"
-        {% endif %}
-            class="text">返回漫画主页</a>
+            {% if previous %}
+                <a href="{{ previous }}"
+            {% else %}
+                <a href="{{ url_for('main.chapter', id=chapter.comic_id, cid=chapter.id) }}"
+            {% endif %}
+                   class="text">返回漫画主页</a>
         </div>
         <h1 class="text-center">{{ chapter.title }}</h1>
         {% for image in images %}
@@ -18,12 +22,15 @@
                  src="{{ url_for('static', filename='resources/' + image.path) }}">
         {% endfor %}
         <div class="text-center">
-        {% if previous %}
-            <a href="{{ previous }}"
-        {% else %}
-            <a href="{{ url_for('main.chapter', id=chapter.comic_id, cid=chapter.id) }}"
-        {% endif %}
-            class="text">返回漫画主页</a>
+            {% if previous %}
+                <a href="{{ previous }}"
+            {% else %}
+                <a href="{{ url_for('main.chapter', id=chapter.comic_id, cid=chapter.id) }}"
+            {% endif %}
+                   class="text">返回漫画主页</a>
         </div>
     </div>
+{% endblock %}
+
+{% block footer %}
 {% endblock %}

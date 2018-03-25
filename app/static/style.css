@@ -1,5 +1,17 @@
-footer {
-    margin: 50px 0;
+body {
+    background-color: #f1f1f1;
+    height: 100%;
+    position: relative;
+}
+
+.footer-text {
+    font-size: 12px;
+    color: #999999;
+    margin-bottom: 50px;
+}
+
+.comic-content {
+    min-height: 100%;
 }
 
 #ci ul, li {
@@ -8,10 +20,18 @@ footer {
     line-height: 25px;
 }
 
+.avatar {
+    margin-top: -20px;
+    margin-bottom: -20px;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+}
+
 .search-header {
     max-width: 700px;
     margin: 0 auto 0 auto;
-    padding: 40px 0 40px 0;
+    padding: 40px 0 60px 0;
 }
 
 .index-item {
@@ -28,7 +48,7 @@ footer {
 
 .pages {
     clear: both;
-    padding-top: 30px;
+    padding-top: 80px;
     text-align: center;
 }
 
@@ -88,8 +108,7 @@ footer {
     margin-left: auto;
     margin-right: auto;
     width: auto;
-    border-top-left-radius: 3px;
-    border-top-right-radius: 3px;
+    height: 280px
 }
 
 .comic-cover {

@@ -9,9 +9,9 @@
             <form method="POST" class="form-form">
                 {{ form.hidden_tag() }}
                 <div class="input-group">
-                    {{ form.url(class="form-control") }}
+                    {{ form.url(class="form-control input-sm") }}
                     <span class="input-group-btn">
-                    {{ form.submit(class="btn btn-primary") }}
+                    {{ form.submit(class="btn btn-primary btn-sm") }}
                     </span>
                 </div>
             </form>
@@ -31,6 +31,7 @@
                         <li><a class="index-title" href="{{ url_for('main.comic', id=comic.id) }}" title="{{ comic.title }}">{{ comic.title }}</a></li>
                         <li><span class="text">来源：</span>{{ comic.interface }}</li>
                         <li><span class="text">更新：</span>{{ moment(comic.update_time).format('YYYY-MM-DD') }}</li>
+                        <li><span class="text">最新：</span>{{ comic.newest_chapter_title }}</li>
                     </ul>
                 </div>
             </div>

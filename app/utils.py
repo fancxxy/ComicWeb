@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from PIL import Image
+from datetime import datetime, timezone, timedelta
 
 
 def crop_cover(filename):
@@ -20,3 +21,9 @@ def crop_cover(filename):
 
 def quote(string):
     return string.replace('/', '／')
+
+
+def utc_timezone(hours):
+    dt = datetime.utcnow().replace(tzinfo=timezone.utc)
+    return dt.astimezone(timezone(timedelta(hours=hours)))
+
