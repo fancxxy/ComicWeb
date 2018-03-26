@@ -5,6 +5,7 @@
 from hashlib import md5
 from os import listdir
 
+from datetime import datetime
 from flask import render_template, redirect, url_for, current_app, flash, request
 from flask_login import current_user, login_required
 from os.path import join, splitext, exists
@@ -14,7 +15,7 @@ from . import main
 from .forms import SubscribeForm
 from comicd import Comic as cc, Chapter as cr, Config as cg
 from ..models import Comic, Chapter, Image, Subscriber
-from ..utils import crop_cover, quote, utc_timezone
+from ..utils import crop_cover, quote
 
 
 @main.route('/', methods=['GET', 'POST'])
@@ -32,7 +33,7 @@ def index():
             if c.init():
                 hash = md5((c.instance.name + c.title).encode('utf-8')).hexdigest()
                 comic = Comic(url=c.url, title=c.title, interface=c.instance.name, cover=hash + '.jpg',
-                              summary=c.summary, update_time=utc_timezone(8))
+                              summary=c.summary)
                 r, f = c.download_cover('app/static/covers', comic.cover)
                 if r:
                     crop_cover(f)

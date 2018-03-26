@@ -1,6 +1,5 @@
 alembic==0.9.8
 click==6.7
-comicd==0.0.1
 dominate==2.3.1
 Flask==0.12.2
 Flask-Bootstrap==3.3.7.1

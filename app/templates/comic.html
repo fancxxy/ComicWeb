@@ -15,7 +15,7 @@
                 <ul>
                     <li><a class="comic-title" href="{{ url_for('main.comic', id=comic.id) }}" title="{{ comic.title }}">{{ comic.title }}</a></li>
                     <li><span class="text">来源：</span>{{ comic.interface }}
-                        <span class="text blank">更新：</span>{{ moment(comic.update_time).format('YYYY-MM-DD') }}
+                        <span class="text blank">更新：</span>{% if comic.update_time %}{{ moment(comic.update_time).format('YYYY-MM-DD') }}{% else %}-{% endif %}
                         <span class="text blank">最新：</span>{{ newest_chapter.title }}
                     <li><span class="text">简介：</span>{{ comic.summary }}</li>
                 </ul>

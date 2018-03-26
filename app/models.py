@@ -3,18 +3,19 @@
 
 from hashlib import md5
 
+from datetime import datetime
+
 from app import db, login_manager
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
 from comicd import Comic as cc
-from .utils import utc_timezone
 
 
 class Subscriber(db.Model):
     __tablename__ = 'subscribers'
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), primary_key=True)
     comic_id = db.Column(db.Integer, db.ForeignKey('comics.id'), primary_key=True)
-    subscribe_date = db.Column(db.DateTime(), default=db.func.now())
+    subscribe_date = db.Column(db.DateTime(), default=datetime.utcnow)
     last_chapter_id = db.Column(db.Integer)
 
 
@@ -31,7 +32,7 @@ class User(db.Model, UserMixin):
     username = db.Column(db.String(64), unique=True, index=True)
     password_hash = db.Column(db.String(128))
     confirmed = db.Column(db.Boolean, default=False)
-    last_seen = db.Column(db.DateTime(), default=db.func.now())
+    last_seen = db.Column(db.DateTime(), default=datetime.utcnow)
     avatar_hash = db.Column(db.String(32))
     comics = db.relationship('Subscriber', backref=db.backref('user', lazy='joined'), lazy='dynamic',
                              cascade='all, delete-orphan')
@@ -42,7 +43,7 @@ class User(db.Model, UserMixin):
             self.avatar_hash = self.gravatar_hash()
 
     def ping(self):
-        self.last_seen = utc_timezone(8)
+        self.last_seen = datetime.utcnow()
         db.session.add(self)
 
     def gravatar_hash(self):
@@ -105,7 +106,7 @@ class Comic(db.Model):
             chapter = Chapter.query.filter_by(id=self.newest_chapter_id).first()
             if chapter and chapter.title != c.chapters[-1][0]:
                 new_chapters = c.chapters[c.chapters.index((chapter.title, chapter.url)) + 1:]
-                no = chapter.chapter_no
+                no = chapter.chapter_no + 1
                 for title, url in new_chapters:
                     chapter = Chapter(title=title, comic_title=self.title, interface=self.interface, url=url,
                                       comic_id=self.id, chapter_no=no)
@@ -114,7 +115,7 @@ class Comic(db.Model):
                 db.session.commit()
                 new_chapter = Chapter.query.filter_by(comic_id=self.id).order_by(db.desc(Chapter.id)).first()
                 self.newest_chapter_id, self.newest_chapter_title = new_chapter.id, new_chapter.title
-                self.update_time = utc_timezone(8)
+                self.update_time = datetime.utcnow()
                 db.session.add(self)
         else:
             # TODO log error
@@ -130,7 +131,7 @@ class Chapter(db.Model):
     interface = db.Column(db.String(32))
     comic_title = db.Column(db.String(128))
     comic_id = db.Column(db.Integer, db.ForeignKey('comics.id'), nullable=False)
-    update_time = db.Column(db.DateTime(), default=db.func.now())
+    update_time = db.Column(db.DateTime(), default=datetime.utcnow)
     path = db.Column(db.String(256), default=None)
     __table_args__ = (db.UniqueConstraint('title', 'comic_title', 'interface', name='uc_title_comic_title_interface'),
                       db.UniqueConstraint('chapter_no', 'comic_id', name='uc_no_id'))
