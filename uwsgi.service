@@ -1,0 +1,15 @@
+[Unit]
+Description=uWSGI script by fancxxy
+After=syslog.target
+
+[Service]
+ExecStart=/home/fancxxy/Works/ComicWeb/venv/bin/uwsgi --ini /home/fancxxy/Works/ComicWeb/uwsgi.ini
+Restart=always
+KillSignal=SIGQUIT
+Type=notify
+StandardError=syslog
+NotifyAccess=all
+EnvironmentFile=/home/fancxxy/Works/ComicWeb/env.sh
+
+[Install]
+WantedBy=multi-user.target
