@@ -80,4 +80,8 @@
 {% block scripts %}
     {{ super() }}
     {{ moment.include_moment() }}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-lazyload/8.6.0/lazyload.min.js"></script>
+    <script>
+        var myLazyLoad = new LazyLoad();
+    </script>
 {% endblock %}

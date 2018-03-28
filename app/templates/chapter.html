@@ -18,8 +18,8 @@
         </div>
         <h1 class="text-center">{{ chapter.title }}</h1>
         {% for image in images %}
-            <img class="img-responsive center-block"
-                 src="{{ url_for('static', filename='resources/' + image.path) }}">
+            <img class="img-responsive center-block" src="{{ url_for('static', filename='loading.gif') }}"
+                 data-src="{{ url_for('static', filename='resources/' + image.path) }}" width="900" height="1300">
         {% endfor %}
         <div class="text-center">
             {% if previous %}
