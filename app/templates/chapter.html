@@ -2,10 +2,6 @@
 
 {% block title %}ComicWeb {{ chapter.title }}-{{ chapter.comic_title }}-{% endblock %}
 
-{% block navbar_define %}
-    <nav class="navbar navbar-default" role="navigation">
-{% endblock %}
-
 {% block page_content %}
     <div class="col-lg-12">
         <div class="text-center">
@@ -18,7 +14,7 @@
         </div>
         <h1 class="text-center">{{ chapter.title }}</h1>
         {% for image in images %}
-            <img class="img-responsive center-block" src="{{ url_for('static', filename='loading.gif') }}"
+            <img class="img-responsive center-block position" src="{{ url_for('static', filename='loading.gif') }}"
                  data-src="{{ url_for('static', filename='resources/' + image.path) }}" width="900" height="1300">
         {% endfor %}
         <div class="text-center">
@@ -29,5 +25,6 @@
             {% endif %}
                    class="text">返回漫画主页</a>
         </div>
+        <br/>
     </div>
 {% endblock %}

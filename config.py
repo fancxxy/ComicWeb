@@ -2,16 +2,14 @@
 # -*- coding: utf-8 -*-
 from os import environ
 
-from comicd import Config as cg
-
 
 class Config(object):
     SECRET_KEY = 'comic web'
     SQLALCHEMY_COMMIT_ON_TEARDOWN = True
     COMICS_PER_PAGE = 8
     CHAPTERS_PER_PAGE = 30
-    cg.home = 'app/static/resources'
-    cg.mode = 'web'
+    RESOURCE_HOME = 'app/static/resources'
+    RESOURCE_MODE = 'web'
 
     @staticmethod
     def init_app(app):

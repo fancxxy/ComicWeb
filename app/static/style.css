@@ -48,7 +48,7 @@ body {
 
 .pages {
     clear: both;
-    padding-top: 80px;
+    padding-top: 120px;
     text-align: center;
 }
 
@@ -157,4 +157,8 @@ body {
 .image-text {
     font-size: 18px;
     color: #2c3e50;
+}
+
+.position {
+    padding: 10px 0 10px 0;
 }

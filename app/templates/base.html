@@ -11,47 +11,45 @@
 {% endblock %}
 
 {% block navbar %}
-    {% block navbar_define %}
-        <nav class="navbar navbar-default" role="navigation">
-    {% endblock %}
-<div class="container">
-    <div class="navbar-header">
-        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-        </button>
-        <a class="navbar-brand" href="{{ url_for('main.index') }}">ComicWeb</a>
-    </div>
-    <div class="navbar-collapse collapse">
-        <ul class="nav navbar-nav">
-            <li><a href="{{ url_for('main.index') }}">订阅列表</a></li>
-            <li class="disabled"><a href="{{ url_for('main.index') }}">更新章节</a></li>
-        </ul>
-        <ul class="nav navbar-nav navbar-right">
-            {% if not current_user.is_authenticated %}
-                <li><a href="{{ url_for('auth.login') }}">登录</a>
-                </li>
-            {% else %}
-                {% if current_user.is_authenticated %}
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                            <img src="{{ current_user.gravatar(size=64) }}" class="avatar">
-                            {{ current_user.username }} <b class="caret"></b>
-                        </a>
-                        <ul class="dropdown-menu">
-                            {#                                    <li><a href="{{ url_for('auth.change_password') }}">Change Password</a></li>#}
-                            {#                                    <li><a href="{{ url_for('auth.change_email_request') }}">Change Email</a></li>#}
-                            <li><a href="{{ url_for('auth.logout') }}">Log Out</a></li>
-                        </ul>
-                    </li>
-                {% endif %}
-            {% endif %}
-        </ul>
-    </div>
-</div>
-</nav>
+    <nav class="navbar navbar-default" role="navigation">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="{{ url_for('main.index') }}">ComicWeb</a>
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li><a href="{{ url_for('main.index') }}">订阅列表</a></li>
+                    <li class="disabled"><a href="{{ url_for('main.index') }}">更新章节</a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    {% if not current_user.is_authenticated %}
+                        <li><a href="{{ url_for('auth.login') }}">登录</a>
+                        </li>
+                    {% else %}
+                        {% if current_user.is_authenticated %}
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                    <img src="{{ current_user.gravatar(size=64) }}" class="avatar">
+                                    {{ current_user.username }} <b class="caret"></b>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    {#                                    <li><a href="{{ url_for('auth.change_password') }}">Change Password</a></li>#}
+                                    {#                                    <li><a href="{{ url_for('auth.change_email_request') }}">Change Email</a></li>#}
+                                    <li><a href="{{ url_for('auth.logout') }}">Log Out</a></li>
+                                </ul>
+                            </li>
+                        {% endif %}
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
 {% endblock %}
 
 {% block content %}

@@ -5,7 +5,6 @@
 from hashlib import md5
 from os import listdir
 
-from datetime import datetime
 from flask import render_template, redirect, url_for, current_app, flash, request
 from flask_login import current_user, login_required
 from os.path import join, splitext, exists
