@@ -7,6 +7,7 @@ from flask_bootstrap import Bootstrap
 from flask_moment import Moment
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
+from flask_apscheduler import APScheduler
 from config import config
 from comicd import Config as cg
 
@@ -16,6 +17,7 @@ db = SQLAlchemy()
 login_manager = LoginManager()
 # login_manager.session_protection = 'strong'
 login_manager.login_view = 'auth.login'
+cron = APScheduler()
 
 
 def create_app(config_name):
@@ -23,9 +25,11 @@ def create_app(config_name):
     app.config.from_object(config[config_name])
     config[config_name].init_app(app)
     bootstrap.init_app(app)
+    db.app = app
     db.init_app(app)
     login_manager.init_app(app)
     moment.init_app(app)
+    cron.init_app(app)
 
     cg.home = app.config['RESOURCE_HOME']
     cg.mode = app.config['RESOURCE_MODE']
@@ -34,5 +38,9 @@ def create_app(config_name):
     app.register_blueprint(main_blueprint)
     from .auth import auth as auth_blueprint
     app.register_blueprint(auth_blueprint, url_prefix='/auth')
+
+    from assist.update import update_comics
+    cron.add_job(id='update_comics', func=update_comics, trigger='interval', hours=app.config['UPDATE_HOURS'])
+    cron.start()
 
     return app

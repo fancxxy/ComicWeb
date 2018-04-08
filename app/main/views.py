@@ -74,7 +74,6 @@ def unsubscribe(id):
 @login_required
 def comic(id):
     comic = Comic.query.get_or_404(id)
-    comic.update()
     page = request.args.get('page', 1, type=int)
     pagination = comic.chapters.order_by(db.desc(Chapter.id)).paginate(page,
                                                                        per_page=current_app.config['CHAPTERS_PER_PAGE'],

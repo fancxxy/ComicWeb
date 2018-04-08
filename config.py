@@ -10,6 +10,7 @@ class Config(object):
     CHAPTERS_PER_PAGE = 30
     RESOURCE_HOME = 'app/static/resources'
     RESOURCE_MODE = 'web'
+    UPDATE_HOURS = 4
 
     @staticmethod
     def init_app(app):
@@ -17,7 +18,6 @@ class Config(object):
 
 
 class DevConfig(Config):
-    DEBUG = True
     SQLALCHEMY_DATABASE_URI = environ.get('MYSQL_URL')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 

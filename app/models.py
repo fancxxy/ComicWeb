@@ -112,11 +112,11 @@ class Comic(db.Model):
                                       comic_id=self.id, chapter_no=no)
                     db.session.add(chapter)
                     no += 1
-                db.session.commit()
                 new_chapter = Chapter.query.filter_by(comic_id=self.id).order_by(db.desc(Chapter.id)).first()
                 self.newest_chapter_id, self.newest_chapter_title = new_chapter.id, new_chapter.title
                 self.update_time = datetime.utcnow()
                 db.session.add(self)
+                return 'comic {} update at {}'.format(self.title, datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S'))
         else:
             # TODO log error
             pass
