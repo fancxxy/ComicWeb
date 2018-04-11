@@ -94,12 +94,12 @@ def chapter(id, no):
         c = cr(chapter.url)
         if c.init():
             c.download()
-        count, chapter.path = 1, join(cg.home, quote(chapter.comic_title), quote(chapter.title))
+        count, chapter.path = 1, join(cg.home, quote(c.title), quote(c.ctitle))
         if exists(chapter.path):
             files = sorted([i for i in listdir(chapter.path) if splitext(i)[1] == '.jpg'], key=lambda x: int(x[:-4]))
             for file in files:
                 image = Image(comic_id=id, chapter_id=chapter.id, image_no=count,
-                              path=join(chapter.comic_title, chapter.title, file))
+                              path=join(quote(c.title), quote(c.ctitle), file))
                 db.session.add(image)
                 count += 1
 
